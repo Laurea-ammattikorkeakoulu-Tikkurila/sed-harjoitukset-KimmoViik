@@ -1,0 +1,78 @@
+name: Autograding
+
+on: [push, pull_request]
+
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+
+    env:
+      RESULTS_REPO_TOKEN: ${{ secrets.RESULTS_REPO_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run autograding
+        id: grade
+        run: python3 harjoitus.py --check
+        env:
+          TASK_KEY: ${{ secrets.TASK_KEY }}
+        continue-on-error: true
+
+      - name: Upload autograde report
+        uses: actions/upload-artifact@v4
+        with:
+          name: autograde-report
+          path: output/results.json
+
+      - name: Upload results to central repo
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+
+          if [ -z "${RESULTS_REPO_TOKEN:-}" ]; then
+            echo "RESULTS_REPO_TOKEN is not set. Skipping upload."
+            exit 0
+          fi
+
+          # Käytä ensisijaisesti results.jsoniin tallennettua opiskelijanumeroa tiedostonimessä.
+          STUDENT_NUMBER_RAW=$(jq -r '.opiskelijanumero // empty' output/results.json)
+          if [ -n "$STUDENT_NUMBER_RAW" ]; then
+            STUDENT=$(printf '%s' "$STUDENT_NUMBER_RAW" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9._-]+/-/g; s/^-+|-+$//g')
+          else
+            # Varmistus: jos opiskelijanumero puuttuu, käytä aiempaa fallbackia.
+            STUDENT_RAW="${GITHUB_ACTOR:-$(basename "$GITHUB_REPOSITORY")}" 
+            STUDENT=$(printf '%s' "$STUDENT_RAW" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9._-]+/-/g; s/^-+|-+$//g')
+          fi
+
+          if [ -z "$STUDENT" ]; then
+            STUDENT="unknown-student"
+          fi
+
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H-%M-%S")
+          TARGET_FILE="data/SED/${STUDENT}-${TIMESTAMP}.json"
+          CONTENT=$(base64 -w 0 output/results.json)
+
+          echo "Upload target filename: ${TARGET_FILE}"
+
+          curl --fail-with-body -X PUT \
+            -H "Authorization: Bearer $RESULTS_REPO_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -d "$(jq -nc --arg msg "Add autograding result for ${STUDENT}" --arg content "$CONTENT" '{message: $msg, content: $content}')" \
+            "https://api.github.com/repos/mjstenbe/linux-assignments-autogradings-repo/contents/${TARGET_FILE}"
+
+      - name: Report grading status
+        if: steps.grade.outcome == 'failure'
+        run: |
+          echo "⚠️ Autograding reported incomplete/incorrect answers (expected for unfinished submissions)."
+          echo "Results were still uploaded when token was available."

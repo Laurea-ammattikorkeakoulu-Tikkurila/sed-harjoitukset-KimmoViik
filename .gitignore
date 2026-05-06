@@ -1,0 +1,19 @@
+# Selväkieliset kysymykset jätetään pois opiskelijan reposta, mutta ne voidaan pitää omassa repossaan. Näin opiskelija ei näe kysymyksiä, mutta opettaja voi silti käyttää niitä arviointiin.
+./data/*.txt
+# tools hakemiston työkaluja ei jaeta opiskelijalle
+./tools/*
+
+# osa config tiedostoista pysyy salaisena                                        
+# config/tila.json
+
+# Opettajan README jää pois opiskelijalta
+./README.md
+
+# Python-cache
+__pycache__/
+# .pyc-tiedostot piilotetaan paitsi harjoitus.pyc (kompiloidtu ohjelma)
+*.pyc
+!harjoitus.pyc
+
+# Suunnittelumuistiot eivät kuulu opiskelijan repoon
+Suunnitelma/

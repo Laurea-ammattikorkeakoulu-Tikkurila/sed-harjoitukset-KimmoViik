@@ -1,0 +1,72 @@
+=== Asiakastietojen koonti ===
+Luotu: 2026-02-10
+Lähde: useita järjestelmiä (HUOM: data ei ole validoitua)
+
+--------------------------------------------------
+
+Asiakas: Matti Meikäläinen
+Henkilötunnus: 120488-123A
+Sähköposti: matti.meikalainen@example.com
+Viimeisin IP: 192.168.1.15
+Puhelinnumero: 040 123 4554
+
+Asiakas: Liisa Laine
+Henkilötunnus: 311299+456B
+Sähköposti: liisa.laine@yritys.fi
+Viimeisin IP: 10.0.0.256
+Puhelinnumero: 040 234 5565
+
+Asiakas: Pekka Testaaja
+Henkilötunnus: 010101A999Z
+Sähköposti: pekka.testaaja@testi.org
+Viimeisin IP: 172.16.5.44
+Puhelinnumero: 040-345 6676
+
+--------------------------------------------------
+
+Asiakas: Anna Anonyymi
+Henkilötunnus: 150390-12AB
+Sähköposti: anna.anonyymi@testi
+Viimeisin IP: 999.12.12.12
+Puhelinnumero: 040 456 7787
+
+Asiakas: Jussi Virtanen
+Henkilötunnus: 290200-1234
+Sähköposti: jussi.virtanen@mail.example.com
+Viimeisin IP: 8.8.8.8
+Puhelinnumero: 050-567 8898
+
+Asiakas: Teemu Esimerkki
+Henkilötunnus: 010199A001X
+Sähköposti: teemu.esimerkki@mail-server.net
+Viimeisin IP: 127.0.0.1
+Puhelinnumero: 055 678 9909
+
+--------------------------------------------------
+
+Asiakas: Outi Oikea
+Henkilötunnus: 241280-789C
+Sähköposti: outi.oikea@company.co.uk
+Viimeisin IP: 192.0.2.1
+Puhelinnumero: 0407891010
+
+Asiakas: Väärä Ville
+Henkilötunnus: 991399-ABC1
+Sähköposti: ville@@example.com
+Viimeisin IP: 192.168.1
+Puhelinnumero: 020 890 2121
+
+Asiakas: Testi Tyyppi
+Henkilötunnus: 010101+0101
+Sähköposti: testi.tyyppi@example.comm
+Viimeisin IP: 300.300.300.300
+Puhelinnumero: 010 9013232
+
+--------------------------------------------------
+
+Yllä oleva aineisto sisältää:
+- oikeita ja virheellisiä henkilötunnuksia
+- oikeita ja virheellisiä sähköpostiosoitteita
+- oikean ja väärän muotoisia IPv4-osoitteita
+
+Tarkoitettu tekstihakuharjoituksiin (grep).

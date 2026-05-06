@@ -1,0 +1,9 @@
+{
+  "unwantedRecommendations": [
+    "github.copilot",
+    "github.copilot-chat",
+    "continue.continue",
+    "codeium.codeium",
+    "tabnine.tabnine-vscode"
+  ]
+}

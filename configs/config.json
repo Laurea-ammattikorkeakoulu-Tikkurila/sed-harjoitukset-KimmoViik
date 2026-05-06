@@ -1,0 +1,7 @@
+{
+  "tehtavat_tiedosto": "data/tasks/tehtavat.txt.enc",
+  "tila_tiedosto": "configs/tila.json",
+  "results_file": "output/results.json",
+  "timeout_seconds": 3,
+  "allowed_commands": ["sed", "sort", "wc", "uniq", "head", "tail", "cat"]
+}

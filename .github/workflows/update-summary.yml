@@ -1,0 +1,31 @@
+name: Update Autograding Summary
+
+on:
+  push:
+    paths:
+      - '*.json'
+      - 'tools/summarize_autograding_results.py'
+
+permissions:
+  contents: write
+
+jobs:
+  update-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build summary table
+        run: python3 tools/summarize_autograding_results.py --results-dir . --output SUMMARY.md
+
+      - name: Commit summary update
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update SUMMARY.md from latest autograding results'
+          file_pattern: SUMMARY.md
